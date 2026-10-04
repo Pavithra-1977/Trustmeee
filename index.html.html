@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>TrustCentre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== THEME ===== */
+:root{--bg:#F4F8FF;--surf:#fff;--h:#12235B;--tx:#1d2a4d;--mut:#5d6b8c;--bd:#dbe5f7;--blue:#2563EB;--pink:#FF4F9A;--blush:#FFE3EF;--lb:#E3EEFF;--g:#1F9D61;--a:#D98E04;--r:#D93F4B;--side:#12235B;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1226;--surf:#15204a;--h:#f1f5ff;--tx:#dbe5ff;--mut:#9fb0d8;--bd:#2a3a6e;--blush:#4a1f38;--lb:#1d2d63;--side:#0a1128;--blue:#5b8cff}}
+:root[data-theme=dark]{--bg:#0b1226;--surf:#15204a;--h:#f1f5ff;--tx:#dbe5ff;--mut:#9fb0d8;--bd:#2a3a6e;--blush:#4a1f38;--lb:#1d2d63;--side:#0a1128;--blue:#5b8cff}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font:15px/1.5 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;color:var(--h);margin:0 0 .5rem}h1{font-size:1.7rem}h2{font-size:1.15rem}h3{font-size:1rem}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:10px;padding:.6rem 1rem;background:var(--lb);color:var(--h);font-weight:600}
+.btn.pri{background:var(--pink);color:#fff}.btn.blue{background:var(--blue);color:#fff}.btn.bad{background:var(--r);color:#fff}
+.btn:hover{filter:brightness(.95)}
+input,select{font:inherit;padding:.6rem .8rem;border:1px solid var(--bd);border-radius:10px;background:var(--surf);color:var(--tx);width:100%}
+/* ===== LAYOUT ===== */
+#app{display:flex;min-height:100vh}
+aside{width:236px;background:var(--side);color:#fff;padding:1.2rem .9rem;display:flex;flex-direction:column;gap:.4rem;flex:none}
+aside .logo{font:700 1.3rem 'Bricolage Grotesque',sans-serif;padding:.3rem .6rem 1rem}
+aside .logo span{color:var(--pink)}
+.nav{display:flex;flex-direction:column;gap:.3rem}
+.nav button{background:none;border:0;color:#c9d6ff;text-align:left;padding:.65rem .9rem;border-radius:999px}
+.nav button.on{background:var(--pink);color:#fff;font-weight:600}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:.5rem;font-size:.85rem;color:#c9d6ff}
+main{flex:1;min-width:0;padding:1.6rem clamp(1rem,3vw,2.4rem)}
+footer{padding:1rem;text-align:center;color:var(--mut);font-size:.82rem}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:18px;padding:1.2rem}
+.card.sm{border-radius:10px;padding:.9rem}
+.row{display:flex;gap:1rem;flex-wrap:wrap}.row>*{flex:1 1 280px;min-width:0}
+.kpis{display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0}
+.kpi{flex:1 1 150px;background:var(--surf);border:1px solid var(--bd);padding:1rem 1.2rem}
+.kpi:nth-child(1){border-radius:22px 8px 22px 8px}.kpi:nth-child(2){border-radius:8px 22px 8px 22px}.kpi:nth-child(3){border-radius:22px 22px 8px 8px}.kpi:nth-child(4){border-radius:8px 8px 22px 22px}
+.kpi b{display:block;font:700 1.9rem 'Bricolage Grotesque',sans-serif;color:var(--h)}.kpi small,.mut{color:var(--mut)}
+.badge{display:inline-block;padding:.15rem .6rem;border-radius:999px;font-size:.8rem;font-weight:600;background:var(--lb);color:var(--h)}
+.badge.g{background:#dff5ea;color:#12663f}.badge.a{background:#fdf0d3;color:#8a5a00}.badge.r{background:#fde2e4;color:#a02634}.badge.p{background:var(--blush);color:#b3236a}
+.bar{height:10px;background:var(--lb);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .6s}
+.g{color:var(--g)}.a{color:var(--a)}.rd{color:var(--r)}
+ul.clean{list-style:none;margin:0;padding:0}ul.clean li{padding:.55rem 0;border-bottom:1px solid var(--bd)}ul.clean li:last-child{border:0}
+.feed{max-height:260px;overflow:auto}
+.feed li{animation:in .4s}@keyframes in{from{opacity:0;transform:translateY(-6px)}}
+.rank li{display:flex;gap:.6rem;align-items:center;cursor:pointer}.rank li span:nth-child(2){flex:1}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.tabs{display:flex;gap:.4rem;margin-bottom:1rem}.tabs button{flex:1;border:1px solid var(--bd);background:var(--surf);color:var(--h);padding:.55rem;border-radius:999px;font-weight:600}.tabs button.on{background:var(--blush);border-color:var(--pink);color:#b3236a}
+.login{max-width:900px;margin:5vh auto;display:flex;border-radius:28px;overflow:hidden;border:1px solid var(--bd);background:var(--surf)}
+.hero{flex:1 1 320px;background:var(--side);color:#fff;padding:2.2rem}.hero h1{color:#fff;font-size:2.1rem}.hero .logo span{color:var(--pink)}
+.form{flex:1 1 360px;padding:2rem}
+.form label{display:block;font-weight:600;margin:.8rem 0 .25rem;color:var(--h)}
+.err{color:var(--r);font-weight:600;min-height:1.4rem;margin:.5rem 0}
+.demo{background:var(--lb);border-radius:12px;padding:.8rem;font-size:.88rem;margin:1rem 0}
+/* ring / map */
+.ringbox{position:relative;width:170px;height:170px;flex:none}.ringbox svg{transform:rotate(-90deg)}
+.ringbox b{position:absolute;inset:0;display:grid;place-items:center;font:700 2.3rem 'Bricolage Grotesque',sans-serif;color:var(--h)}
+.map text{font-size:9px;fill:var(--tx)}.map .c{cursor:pointer}
+.formula{background:var(--lb);border-radius:12px;padding:.8rem;font-family:ui-monospace,monospace;font-size:.85rem;overflow-x:auto}
+/* verify */
+.cam{height:200px;border-radius:16px;background:linear-gradient(#0d1a45,#1b2f73);position:relative;overflow:hidden;display:grid;place-items:center}
+.cam .face{width:90px;height:120px;border:3px dashed #8fb0ff;border-radius:50%}
+.cam .scan{position:absolute;left:0;right:0;height:3px;background:var(--pink);box-shadow:0 0 14px var(--pink);top:0;display:none}
+.cam.on .scan{display:block;animation:sc 1.4s linear infinite alternate}@keyframes sc{to{top:100%}}
+.steps li{display:flex;gap:.7rem;align-items:center}.ic{width:26px;height:26px;border-radius:50%;background:var(--lb);display:grid;place-items:center;font-size:.8rem;font-weight:700;flex:none}
+.ic.ok{background:var(--g);color:#fff}.ic.no{background:var(--r);color:#fff}.ic.wk{background:var(--pink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
+.ph{height:80px;border-radius:10px;background:repeating-linear-gradient(45deg,var(--lb),var(--lb) 8px,var(--surf) 8px,var(--surf) 16px);display:grid;place-items:center;color:var(--mut);font-size:.8rem}
+.rec{font-family:ui-monospace,monospace;font-size:.78rem;border-left:5px solid var(--g);background:var(--surf);padding:.7rem;border-radius:4px 14px 14px 4px;margin-bottom:.6rem;word-break:break-all}
+.rec.bad{border-color:var(--r);background:#fde2e4;color:#7a1220}
+.tl{display:flex;gap:.3rem;flex-wrap:wrap;margin:.6rem 0}.tl div{flex:1 1 110px;text-align:center;font-size:.8rem;padding:.5rem .3rem;border-radius:10px;background:var(--lb);color:var(--mut)}
+.tl .done{background:var(--blue);color:#fff}.tl .cur{background:var(--pink);color:#fff;font-weight:700}
+.mbars{display:flex;gap:.8rem;align-items:flex-end;height:120px}.mbars div{flex:1;text-align:center;font-size:.8rem}.mbars i{display:block;background:var(--blue);border-radius:8px 8px 2px 2px;margin-bottom:.2rem}
+dialog{border:0;border-radius:22px;padding:1.4rem;width:min(460px,92vw);background:var(--surf);color:var(--tx)}dialog::backdrop{background:#0b1226aa}
+.bn{display:none}
+@media(max-width:760px){#app{flex-direction:column}aside{width:100%;flex-direction:row;align-items:center;overflow-x:auto;padding:.6rem}aside .logo{padding:0 .6rem}.nav{flex-direction:row}.nav button{white-space:nowrap}.side-foot{margin:0 0 0 auto;flex-direction:row;align-items:center}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{aside,footer,.noprint{display:none!important}body{background:#fff}.card{break-inside:avoid}}
+</style></head><body>
+<div id="root"></div>
+<script>
+/* ===== DATA ===== */
+const C=[
+{id:0,n:'Gummidipundi Skill Hub',x:190,y:34,att:93,inf:90,fr:92,an:5},
+{id:1,n:'Vellore Training Centre',x:128,y:62,att:86,inf:82,fr:80,an:12},
+{id:2,n:'Salem Skill Centre',x:92,y:124,att:74,inf:68,fr:70,an:25},
+{id:3,n:'Coimbatore Tech Hub',x:40,y:172,att:90,inf:94,fr:88,an:8},
+{id:4,n:'Trichy Training Institute',x:132,y:172,att:61,inf:55,fr:48,an:42},
+{id:5,n:'Thanjavur Skill Centre',x:178,y:196,att:78,inf:72,fr:66,an:20},
+{id:6,n:'Madurai Skill Academy',x:112,y:240,att:45,inf:40,fr:38,an:62},
+{id:7,n:'Tirunelveli Centre',x:112,y:318,att:84,inf:79,fr:75,an:14}];
+const trust=c=>Math.round(.35*c.att+.30*c.inf+.20*c.fr+.15*(100-c.an));
+const col=s=>s>=80?'var(--g)':s>=50?'var(--a)':'var(--r)';
+const cls=s=>s>=80?'g':s>=50?'a':'r';
+const flagsOf=c=>{const f=[];if(c.att<70)f.push(['r','Attendance pattern looks unreliable ('+c.att+'/100)']);if(c.inf<60)f.push(['r','Required infrastructure missing or unverified ('+c.inf+'/100)']);else if(c.inf<80)f.push(['a','Some infrastructure items need review']);if(c.fr<60)f.push(['a','Photo evidence is older than 30 days']);if(c.an>=40)f.push(['r','Repeated anomalies: identical check-in times and device reuse']);else if(c.an>=20)f.push(['a','A few unusual check-in patterns']);if(!f.length)f.push(['g','No open findings. Evidence is fresh and consistent.']);return f};
+const USERS={officer:{id:'officer@tn.gov',pw:'demo123',name:'Inspector Meena'},student:{id:'SKL-2041',pw:'demo123'},parent:{id:'9876543210',pw:'123456'}};
+const STU={id:'SKL-2041',name:'Priya S.',course:'Electrician (Domestic)',centre:0,total:120,min:75,
+months:[['Jul',22,20],['Aug',21,18],['Sep',20,17],['Oct',15,13]],
+stages:['Enrolled','Foundation','Practical training','Assessment','Certification','Placement support'],cur:2,
+recent:[['Fri 3 Oct','Present','09:02'],['Thu 2 Oct','Present','08:58'],['Wed 1 Oct','Late','09:24'],['Tue 30 Sep','Absent','—'],['Mon 29 Sep','Present','09:00']],
+scores:[['Basic circuits',82],['Wiring practice',76],['Safety rules',91]],
+remarks:'Priya handles wiring tasks neatly and follows safety steps. Needs more practice on fault finding.',
+next:['Complete the practical lab on distribution boards','Book your mid-course assessment','Keep attendance above 75% for certification']};
+const ALERT_T=[['r','Printed-photo attempt blocked'],['a','Check-in outside geofence'],['a','Same device used for 3 students'],['r','Headcount mismatch in photo'],['g','Surprise inspection photo verified'],['a','Late check-in cluster detected']];
+let alerts=[['r',C[6].n,'Headcount mismatch in photo','10:41'],['a',C[4].n,'Photo evidence is stale','10:32'],['g',C[0].n,'Inspection evidence verified','10:20']];
+let S={role:null,tab:'cmd',sel:0,genuine:true,scanned:false,timer:null};
+const $=s=>document.querySelector(s);const clock=()=>new Date().toTimeString().slice(0,5);
+const stu=()=>{const held=STU.months.reduce((a,m)=>a+m[1],0),pr=STU.months.reduce((a,m)=>a+m[2],0),rem=STU.total-held,need=Math.ceil(STU.total*STU.min/100),canMiss=Math.max(0,rem-Math.max(0,need-pr));return{held,pr,rem,pct:Math.round(pr/held*100),canMiss,ok:pr+rem>=need&&pr/held*100>=STU.min,avg:Math.round(STU.scores.reduce((a,s)=>a+s[1],0)/STU.scores.length)}};
+/* ===== LOGIN ===== */
+let lrole='officer';
+const LF={officer:['Email','officer@tn.gov','Password'],student:['Student ID','SKL-2041','Password'],parent:['Registered mobile number','9876543210','One-time code']};
+function login(){clearInterval(S.timer);S.role=null;const f=LF[lrole];
+$('#root').innerHTML=`<div class="login"><div class="hero"><div class="logo" style="font:700 1.3rem 'Bricolage Grotesque'">Trust<span>Centre</span></div><h1>Attendance and compliance you can verify</h1><p>TrustCentre checks that people and infrastructure are really there, instead of only recording a tick.</p></div>
+<div class="form"><h2>Sign in</h2><div class="tabs" role="tablist">${['officer','student','parent'].map(r=>`<button role="tab" class="${r==lrole?'on':''}" data-r="${r}">${r[0].toUpperCase()+r.slice(1)}</button>`).join('')}</div>
+<label for="u">${f[0]}</label><input id="u" autocomplete="off"><label for="p">${f[2]}</label><input id="p" type="password" autocomplete="off">
+<div class="err" id="err" role="alert"></div><div class="row" style="gap:.5rem"><button class="btn blue" id="go">Sign in</button><button class="btn" id="fill">Fill demo login</button></div>
+<div class="demo"><b>Demo logins</b><br>Officer: officer@tn.gov / demo123<br>Student: SKL-2041 / demo123<br>Parent: 9876543210 / code 123456</div>
+<button class="btn" id="th">Switch light or dark</button></div></div><footer>Demo data is synthetic. Face data stored as embeddings only, with consent (DPDP Act).</footer>`;
+document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{lrole=b.dataset.r;login()});
+$('#fill').onclick=()=>{$('#u').value=USERS[lrole].id;$('#p').value=lrole=='parent'?'123456':'demo123'};
+$('#th').onclick=theme;
+const go=()=>{const U=USERS[lrole];if($('#u').value.trim()==U.id&&$('#p').value==U.pw){S.role=lrole;S.tab=lrole=='officer'?'cmd':'me';shell()}else $('#err').textContent=lrole=='parent'?'That mobile number or code is not right. Try again.':'Those details do not match. Check them and try again.'};
+$('#go').onclick=go;$('#p').onkeydown=e=>{if(e.key=='Enter')go()}}
+function theme(){const r=document.documentElement,d=getComputedStyle(r).getPropertyValue('--bg').trim()=='#0b1226';r.dataset.theme=d?'light':'dark'}
+/* ===== SHELL ===== */
+const NAV={officer:[['cmd','Command centre'],['rep','Centre report'],['ver','Verify check-in'],['aud','AI infrastructure audit'],['led','Evidence ledger']],student:[['me','My progress']],parent:[['me','Priya\u2019s progress']]};
+function shell(){$('#root').innerHTML=`<div id="app"><aside><div class="logo">Trust<span>Centre</span></div><nav class="nav" aria-label="Main">${NAV[S.role].map(n=>`<button data-t="${n[0]}" class="${n[0]==S.tab?'on':''}">${n[1]}</button>`).join('')}</nav>
+<div class="side-foot"><span>${S.role=='officer'?USERS.officer.name:S.role=='student'?STU.name:'Parent of Priya S.'}</span><button class="btn" id="th2">Light or dark</button><button class="btn pri" id="so">Sign out</button></div></aside><main id="main"></main></div><footer>Demo data is synthetic. Face data stored as embeddings only, with consent (DPDP Act).</footer>
+<dialog id="dlg"></dialog>`;
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;S.scanned=false;shell()});
+$('#th2').onclick=theme;$('#so').onclick=login;clearInterval(S.timer);
+if(S.role=='officer'){S.timer=setInterval(()=>{const t=ALERT_T[Math.random()*ALERT_T.length|0],c=C[Math.random()*8|0];addAlert(t[0],c.n,t[1])},5000)}
+({cmd,rep,ver,aud,led,me})[S.tab]()}
+function addAlert(l,c,t){alerts.unshift([l,c,t,clock()]);alerts=alerts.slice(0,30);const f=$('#feed');if(f)f.innerHTML=feedHTML();const k=$('#kflags');if(k)k.textContent=openFlags()}
+const openFlags=()=>alerts.filter(a=>a[0]!='g').length;
+const feedHTML=()=>alerts.map(a=>`<li><span class="badge ${a[0]}">${{r:'High',a:'Review',g:'Verified'}[a[0]]}</span> <b>${a[1]}</b><br><span class="mut">${a[2]} · ${a[3]}</span></li>`).join('');
+/* ===== OFFICER: COMMAND ===== */
+function cmd(){const avg=Math.round(C.reduce((a,c)=>a+trust(c),0)/C.length),ranked=[...C].sort((a,b)=>trust(b)-trust(a));
+$('#main').innerHTML=`<h1>Command centre</h1><p class="mut">Live view of verified attendance and compliance across Tamil Nadu.</p>
+<div class="kpis"><div class="kpi"><small>Centres monitored</small><b>${C.length}</b></div><div class="kpi"><small>Verified check-ins today</small><b>${C.reduce((a,c)=>a+Math.round(c.att*3.2),0)}</b></div><div class="kpi"><small>Open flags</small><b id="kflags">${openFlags()}</b></div><div class="kpi"><small>Average trust score</small><b>${avg}</b></div></div>
+<div class="row"><div class="card"><h2>Trust score map</h2><svg class="map" viewBox="0 0 280 350" role="img" aria-label="Map of Tamil Nadu with centres" style="max-height:420px;width:100%"><path d="M120 10L170 20L205 60L222 110L252 150L262 200L238 250L200 300L165 345L140 330L115 285L80 250L40 230L22 180L55 140L68 90L100 50Z" fill="var(--lb)" stroke="var(--blue)" stroke-width="2"/>
+${C.map(c=>`<g class="c" tabindex="0" data-c="${c.id}"><circle cx="${c.x}" cy="${c.y}" r="11" fill="${col(trust(c))}" stroke="#fff" stroke-width="2"/><text x="${c.x}" y="${c.y+3.5}" text-anchor="middle" style="fill:#fff;font-weight:700">${trust(c)}</text><text x="${c.x+14}" y="${c.y+3}">${c.n.split(' ')[0]}</text></g>`).join('')}</svg>
+<span class="badge g">80+</span> <span class="badge a">50 to 79</span> <span class="badge r">Below 50</span></div>
+<div style="display:flex;flex-direction:column;gap:1rem"><div class="card"><div class="row" style="align-items:center;gap:.5rem"><h2 style="margin:0">Live alerts</h2><button class="btn bad" id="spoof" style="flex:none">Simulate spoof attempt</button></div><ul class="clean feed" id="feed">${feedHTML()}</ul></div></div></div>
+<div class="card" style="margin-top:1rem;border-radius:8px 28px 8px 28px"><h2>Centres ranked by trust score</h2><ul class="clean rank">${ranked.map((c,i)=>`<li data-c="${c.id}" tabindex="0"><b>${i+1}</b><span>${c.n}</span><span class="dot" style="background:${col(trust(c))}"></span><b>${trust(c)}</b></li>`).join('')}</ul></div>`;
+document.querySelectorAll('[data-c]').forEach(e=>{const f=()=>{S.sel=+e.dataset.c;S.tab='rep';shell()};e.onclick=f;e.onkeydown=k=>{if(k.key=='Enter')f()}});
+$('#spoof').onclick=()=>{const c=C[Math.random()*8|0];c.an=Math.min(95,c.an+6);addAlert('r',c.n,'Spoof attempt blocked: printed photo failed liveness')}}
+/* ===== OFFICER: REPORT ===== */
+function ring(t){const L=2*Math.PI*52;return`<div class="ringbox"><svg width="170" height="170" viewBox="0 0 120 120"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4F9A"/><stop offset="1" stop-color="#2563EB"/></linearGradient></defs><circle cx="60" cy="60" r="52" fill="none" stroke="var(--lb)" stroke-width="12"/><circle cx="60" cy="60" r="52" fill="none" stroke="url(#gr)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${t/100*L} ${L}"/></svg><b>${t}</b></div>`}
+function rep(){const c=C[S.sel],t=trust(c),parts=[['Attendance integrity',c.att,.35],['Infrastructure compliance',c.inf,.30],['Evidence freshness',c.fr,.20],['Anomaly check (100 minus penalty)',100-c.an,.15]];
+$('#main').innerHTML=`<div class="noprint row" style="align-items:end"><div><h1>Centre report</h1></div><div style="flex:0 1 320px"><label for="cs" class="mut">Choose a centre</label><select id="cs">${C.map(x=>`<option value="${x.id}" ${x.id==S.sel?'selected':''}>${x.n}</option>`).join('')}</select></div></div>
+<h2 style="margin-top:1rem">${c.n}</h2><div class="row"><div class="card" style="display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap">${ring(t)}<div><span class="badge ${cls(t)}">${t>=80?'Trusted':t>=50?'Needs review':'High risk'}</span><p class="mut">Trust score out of 100 · generated ${new Date().toDateString()}</p></div></div>
+<div class="card">${parts.map(p=>`<div style="margin-bottom:.7rem"><div style="display:flex;justify-content:space-between"><span>${p[0]}</span><b>${p[1]}</b></div><div class="bar"><i style="width:${p[1]}%;background:${col(p[1])}"></i></div></div>`).join('')}</div></div>
+<div class="row" style="margin-top:1rem"><div class="card"><h2>Flags and findings</h2><ul class="clean">${flagsOf(c).map(f=>`<li><span class="badge ${f[0]}">${{r:'High',a:'Review',g:'Good'}[f[0]]}</span> ${f[1]}</li>`).join('')}</ul></div>
+<div class="card"><h2>How the score is worked out</h2><div class="formula">Trust = 0.35 × Attendance integrity + 0.30 × Infrastructure compliance + 0.20 × Evidence freshness + 0.15 × (100 − Anomaly penalty)<br><br>= ${parts.map(p=>p[2]+' × '+p[1]).join(' + ')}<br>= <b>${t}</b></div></div></div>
+<p class="noprint"><button class="btn pri" id="dl">Download inspection report</button></p>`;
+$('#cs').onchange=e=>{S.sel=+e.target.value;rep()};$('#dl').onclick=()=>print()}
+/* ===== VERIFY (shared) ===== */
+const STEPS=['GPS geofence','Blink liveness','Face match','Ledger entry'];
+function verHTML(p){return`<div class="cam" id="${p}cam"><div class="face"></div><div class="scan"></div></div><ul class="clean steps" id="${p}st">${STEPS.map((s,i)=>`<li><span class="ic">${i+1}</span><span>${s}</span><span class="mut" style="margin-left:auto"></span></li>`).join('')}</ul>
+<div class="row" style="gap:.5rem"><button class="btn blue" id="${p}ok">Genuine check-in</button><button class="btn bad" id="${p}no">Printed-photo attack</button></div>`}
+function bindVer(p,who){let busy=0;const run=attack=>{if(busy)return;busy=1;$('#'+p+'cam').classList.add('on');const li=[...document.querySelectorAll('#'+p+'st li')];li.forEach(l=>{l.children[0].className='ic';l.children[0].textContent=STEPS.indexOf(l.children[1].textContent)+1;l.children[2].textContent=''});
+const info=['Inside 100 m of centre','Blink detected','Match 98%','Hash added to ledger'];
+let i=0;const next=()=>{if(i>=4){$('#'+p+'cam').classList.remove('on');busy=0;return}const l=li[i];l.children[0].className='ic wk';
+setTimeout(()=>{if(attack&&i==1){l.children[0].className='ic no';l.children[0].textContent='×';l.children[2].textContent='No blink: flat image';for(let j=2;j<4;j++)li[j].children[2].textContent='Skipped';addAlert('r',C[0].n,'Printed-photo attack failed at liveness ('+who+')');$('#'+p+'cam').classList.remove('on');busy=0;return}
+l.children[0].className='ic ok';l.children[0].textContent='✓';l.children[2].textContent=info[i];if(i==3)addLedger('Check-in '+who+' verified '+clock());i++;next()},800)};next()};
+$('#'+p+'ok').onclick=()=>run(0);$('#'+p+'no').onclick=()=>run(1)}
+function ver(){$('#main').innerHTML=`<h1>Verify check-in</h1><p class="mut">Four checks must all pass before attendance counts.</p><div class="card" style="max-width:560px">${verHTML('v')}</div>`;bindVer('v','officer test')}
+/* ===== OFFICER: AUDIT ===== */
+const ITEMS=[['Fire extinguisher',1],['CCTV camera',1],['Drinking water',1],['Whiteboard',1],['Computers (10+)',12],['Benches (20+)',24]];
+let marked=27;
+function aud(){const g=S.genuine,det=g?27:9;
+const res=ITEMS.map((it,i)=>{const ok=g||i%2==0&&i<4?true:g;const present=g?true:[1,3,4].indexOf(i)<0?i<2:false;return{n:it[0],ok:present,conf:present?88+(i*3)%11:0}});
+$('#main').innerHTML=`<h1>AI infrastructure audit</h1><p class="mut">Upload site photos and let the AI check each required item.</p>
+<div class="row" style="align-items:center;gap:.6rem"><div class="tabs" style="flex:0 1 320px;margin:0"><button class="${g?'on':''}" id="tg">Genuine centre</button><button class="${!g?'on':''}" id="tf">Fake centre</button></div><button class="btn pri" id="scan" style="flex:none">Run AI scan</button></div>
+<div class="grid" style="margin:1rem 0">${ITEMS.map((it,i)=>{const r=res[i];return`<div class="card sm"><div class="ph">Photo placeholder</div><b>${it[0]}</b><div>${S.scanned?(r.ok?`<span class="badge g">Detected ${r.conf}%</span>`:'<span class="badge r">Missing</span>'):'<span class="badge">Not scanned</span>'}</div></div>`}).join('')}</div>
+<div class="card"><h2>Headcount cross-check</h2><label for="sl">People marked present: <b id="mv">${marked}</b></label><input type="range" id="sl" min="0" max="40" value="${marked}" style="padding:0"><p>People detected in photo: <b>${det}</b></p><div id="hc"></div></div>`;
+const hc=()=>{const gap=marked?Math.abs(marked-det)/marked*100:0;$('#hc').innerHTML=gap>40?`<span class="badge r">Possible fake attendance</span> <span class="mut">Gap is ${Math.round(gap)}% (limit 40%)</span>`:`<span class="badge g">Headcount matches</span> <span class="mut">Gap is ${Math.round(gap)}%</span>`};hc();
+$('#sl').oninput=e=>{marked=+e.target.value;$('#mv').textContent=marked;hc()};
+$('#tg').onclick=()=>{S.genuine=true;S.scanned=false;aud()};$('#tf').onclick=()=>{S.genuine=false;S.scanned=false;aud()};
+$('#scan').onclick=()=>{S.scanned=true;aud();if(!S.genuine)addAlert('r','Audited centre','AI scan found missing infrastructure')}}
+/* ===== OFFICER: LEDGER ===== */
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+let LED=[];const ZERO='0'.repeat(64);
+async function seedLedger(){LED=[];for(const d of['Check-in SKL-2041 verified 09:02','Check-in SKL-2019 verified 09:05','Inspection photo uploaded, Gummidipundi','Check-in SKL-2077 verified 09:11','Audit result signed by officer']){await addLedger(d,1)}}
+async function addLedger(d,quiet){const prev=LED.length?LED[LED.length-1].h:ZERO;const h=await sha(prev+d);LED.push({d,prev,h});if(!quiet&&S.tab=='led')led()}
+async function led(){if(!LED.length)await seedLedger();let run=ZERO,broken=false;const rows=[];
+for(const r of LED){const calc=await sha(run+r.d);const ok=!broken&&calc==r.h;if(!ok)broken=true;run=calc;rows.push([r,ok,calc])}
+if(S.tab!='led')return;
+$('#main').innerHTML=`<h1>Evidence ledger</h1><p class="mut">Each record includes the SHA-256 hash of the one before it, so any edit breaks every later record.</p>
+<p><button class="btn bad" id="tp">Tamper with record 3</button> <button class="btn" id="rs">Reset ledger</button></p>
+${rows.map(([r,ok,calc],i)=>`<div class="rec ${ok?'':'bad'}"><b>Record ${i+1}</b> ${ok?'<span class="badge g">Verified</span>':'<span class="badge r">Tampering detected</span>'}<br>${r.d}<br>Previous: ${r.prev.slice(0,24)}…<br>Hash: ${r.h.slice(0,40)}…</div>`).join('')}`;
+$('#tp').onclick=()=>{LED[2].d='Inspection photo REPLACED, Gummidipundi';led()};$('#rs').onclick=async()=>{await seedLedger();led()}}
+/* ===== STUDENT + PARENT ===== */
+function me(){const s=stu(),par=S.role=='parent',nm=par?'Priya\u2019s':'Your';
+$('#main').innerHTML=`<h1>${par?'Priya\u2019s progress':'Hi, Priya'}</h1><p class="mut">${STU.course} · ${C[STU.centre].n}${par?' · Read-only view':''}</p>
+<div class="kpis"><div class="kpi"><small>Attendance</small><b>${s.pct}%</b></div><div class="kpi"><small>Days present</small><b>${s.pr} of ${s.held}</b></div><div class="kpi"><small>Average assessment score</small><b>${s.avg}%</b></div><div class="kpi"><small>Current stage</small><b style="font-size:1.1rem">${STU.stages[STU.cur]}</b></div></div>
+<div class="card"><h2>Course journey</h2><div class="tl">${STU.stages.map((x,i)=>`<div class="${i<STU.cur?'done':i==STU.cur?'cur':''}">${i<STU.cur?'✓ ':''}${x}</div>`).join('')}</div></div>
+<div class="row" style="margin-top:1rem"><div class="card"><h2>Certification eligibility</h2><p>Minimum attendance: <b>${STU.min}%</b> · ${s.rem} course days remaining</p><span class="badge ${s.ok?'g':'r'}">${s.ok?'On track':'At risk'}</span><p>${s.ok?`${par?'Priya':'You'} can still miss <b>${s.canMiss}</b> of the remaining ${s.rem} days.`:`${par?'Priya':'You'} need to attend every remaining day to qualify.`}</p>
+${par?'':'<button class="btn pri" id="ci">Check in now</button>'}</div>
+<div class="card"><h2>Monthly attendance</h2><div class="mbars">${STU.months.map(m=>{const p=Math.round(m[2]/m[1]*100);return`<div><b>${p}%</b><i style="height:${p}px;background:${p>=STU.min?'var(--blue)':'var(--a)'}"></i>${m[0]}</div>`}).join('')}</div></div></div>
+<div class="row" style="margin-top:1rem"><div class="card"><h2>Recent check-ins</h2><ul class="clean">${STU.recent.map(r=>`<li><span class="badge ${{Present:'g',Late:'a',Absent:'r'}[r[1]]}">${r[1]}</span> ${r[0]} · ${r[2]}${r[1]=='Absent'?'':'<br><span class="mut">Face, location and liveness verified</span>'}</li>`).join('')}</ul></div>
+<div class="card"><h2>Assessment scores</h2>${STU.scores.map(x=>`<div style="margin-bottom:.6rem"><div style="display:flex;justify-content:space-between"><span>${x[0]}</span><b>${x[1]}%</b></div><div class="bar"><i style="width:${x[1]}%"></i></div></div>`).join('')}<h3 style="margin-top:1rem">Trainer remarks</h3><p>${STU.remarks}</p></div></div>
+<div class="row" style="margin-top:1rem"><div class="card"><h2>Next steps</h2><ul class="clean">${STU.next.map(n=>`<li>${n}</li>`).join('')}</ul></div>
+${par?`<div class="card" style="border-radius:8px 28px 8px 28px"><h2>Alerts sent to you</h2><ul class="clean"><li><span class="badge r">Absence</span> SMS: Priya was marked absent on Tue 30 Sep.</li><li><span class="badge a">Late</span> SMS: Priya arrived at 09:24 on Wed 1 Oct.</li><li><span class="badge p">Weekly</span> Sunday summary: ${s.pct}% attendance, ${s.canMiss} days of buffer left.</li></ul><p class="mut">Privacy: face images are never shown to parents, and every view of this page is logged.</p></div>`:''}</div>`;
+if(!par)$('#ci').onclick=()=>{const d=$('#dlg');d.innerHTML=`<h2>Check in</h2>${verHTML('s')}<p><button class="btn" id="cl">Close</button></p>`;d.showModal();bindVer('s',STU.id);$('#cl').onclick=()=>d.close()}}
+login();
+</script></body></html>
